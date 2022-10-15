@@ -42,6 +42,21 @@ const reducer = (state, { type, payload }) => {
         currentOperand: `${state.currentOperand || ""}${payload.digit}`,
       };
     case ACTIONS.CHOOSE_OPERATOR:
+      if (state.currentOperand === "-") {
+        return {
+          ...state,
+          currentOperand: "",
+          operator: payload.operator,
+        };
+      }
+
+      if (payload.operator === "-" && state.currentOperand == null) {
+        return {
+          ...state,
+          currentOperand: payload.operator,
+        };
+      }
+
       if (state.currentOperand == null && state.previousOperand == null) {
         return state;
       }
@@ -122,12 +137,12 @@ function Calculator() {
 
   return (
     <div className="flex min-w-[334px] min-h-[394px] flex-col bg-gray-900 px-2 pb-2">
-      <Display
-        currentOperand={currentOperand}
-        previousOperand={previousOperand}
-        operator={operator}
-      />
-      <div className="grid grid-cols-4 grid-rows-5 bg-gray-900 gap-[1px]">
+      <div className="grid grid-cols-4 bg-gray-900 gap-[1px]">
+        <Display
+          currentOperand={currentOperand}
+          previousOperand={previousOperand}
+          operator={operator}
+        />
         <ClearButton id="clear" dispatch={dispatch} />
         <OperatorButton id="divide" operator="/" dispatch={dispatch} />
         <OperatorButton id="multiply" operator="x" dispatch={dispatch} />

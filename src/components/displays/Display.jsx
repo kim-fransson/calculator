@@ -3,7 +3,7 @@ import CurrentOperandDisplay from "./CurrentOperandDisplay";
 
 function Display({ currentOperand, previousOperand, operator }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col col-span-full justify-end break-words">
       <PreviousOperandDisplay
         previousOperand={previousOperand}
         operator={operator}
