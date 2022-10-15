@@ -1,4 +1,4 @@
-import { ACTIONS } from "../Calculator";
+import { ACTIONS } from "../../actions";
 import Button from "./Button";
 
 function EqualsButton({ id, dispatch }) {

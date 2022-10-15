@@ -1,5 +1,5 @@
 import Button from "./Button";
-import { ACTIONS } from "../Calculator";
+import { ACTIONS } from "../../actions";
 
 function OperatorButton({ operator, id, dispatch }) {
   return (
