@@ -22,6 +22,7 @@ export const ThemeController = () => {
         <li>
           {themes.map((theme) => (
             <input
+              key={theme}
               type="radio"
               name="theme-dropdown"
               className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
