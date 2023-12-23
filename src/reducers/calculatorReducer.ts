@@ -1,31 +1,116 @@
+import { evaluate } from "mathjs";
+
 export type Calculator = {
   display: string;
+  currentToken: string;
 };
 
-export type CalculatorAction = AddValue;
+export type CalculatorAction = AddOperand | AddOperation | Evaluate;
 
-export type AddValue = {
-  type: "ADD_VALUE";
-  value: string;
+export type Operand =
+  | "0"
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | ".";
+export type AddOperand = {
+  type: "ADD_OPERAND";
+  operand: Operand;
+};
+
+export type Operation = "%" | "/" | "x" | "-" | "+";
+export type AddOperation = {
+  type: "ADD_OPERATION";
+  operation: Operation;
+};
+
+export type Evaluate = {
+  type: "EVALUATE";
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const isOperation = (value: any): value is Operation => {
+  return ["%", "/", "x", "-", "+"].includes(value);
 };
 
 export const calculatorReducer = (
   calculator: Calculator,
   action: CalculatorAction,
 ) => {
+  const { display, currentToken } = calculator;
+  let currentDisplay = display;
+  if (currentDisplay === "Infinity" || currentDisplay === "Error") {
+    currentDisplay = "";
+  }
+
   switch (action.type) {
-    case "ADD_VALUE": {
-      const currentDisplay = calculator.display;
-      const value = action.value;
-      switch (value) {
-        case ".":
-          if (!currentDisplay.includes(".")) {
-            return { ...calculator, display: currentDisplay + value };
-          }
-          return calculator;
-        default:
-          return { ...calculator, display: currentDisplay + value };
+    case "ADD_OPERAND": {
+      const operand = action.operand;
+
+      if (operand === "." && currentToken.includes(".")) {
+        return calculator;
+      } else if (currentToken === "0" && operand === ".") {
+        return {
+          ...calculator,
+          display: currentDisplay + operand,
+          currentToken: currentToken + operand,
+        };
       }
+
+      if (operand === "0" && currentToken === "0") {
+        return calculator;
+      }
+
+      return {
+        ...calculator,
+        display: currentDisplay === "0" ? operand : currentDisplay + operand,
+        currentToken:
+          currentToken === "0" && operand !== "."
+            ? operand
+            : currentToken + operand,
+      };
+    }
+    case "ADD_OPERATION": {
+      if (action.operation === "%" && currentToken === "%") {
+        return { ...calculator, display: currentDisplay + action.operation };
+      } else if (isOperation(currentToken)) {
+        console.log({
+          currentDisplay,
+          currentToken,
+        });
+        return {
+          ...calculator,
+          display: currentDisplay.slice(0, -1) + action.operation,
+          currentToken: action.operation,
+        };
+      } else if (!isOperation(currentToken)) {
+        return {
+          ...calculator,
+          display: currentDisplay + action.operation,
+          currentToken: action.operation,
+        };
+      }
+      return calculator;
+    }
+    case "EVALUATE": {
+      let res = "";
+      const parsedDisplay = currentDisplay.replace("x", "*");
+      try {
+        res = evaluate(parsedDisplay).toString();
+      } catch (e) {
+        res = "Error";
+      }
+      return {
+        ...calculator,
+        display: res || currentDisplay,
+        currentToken: res || currentToken,
+      };
     }
   }
 };
