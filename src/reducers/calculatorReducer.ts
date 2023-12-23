@@ -64,7 +64,7 @@ export const calculatorReducer = (
 ) => {
   const { token, previousOperations } = calculator;
   let currentToken = token;
-  if (currentToken === "Infinity" || currentToken === "Error") {
+  if (currentToken === "Error") {
     currentToken = "";
   }
 
@@ -120,6 +120,8 @@ export const calculatorReducer = (
         res = evaluate(mathjsExpression).toString();
       } catch (e) {
         res = "Error";
+      } finally {
+        res = res === "Infinity" ? "Error" : res;
       }
       return {
         ...calculator,

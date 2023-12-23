@@ -49,7 +49,7 @@ export const Calculator = () => {
   };
 
   return (
-    <div className="max-w-md shadow-2xl w-full bg-neutral/70 text-neutral-content md:rounded-3xl md:h-auto h-full">
+    <div className="max-w-md shadow-2xl w-full bg-neutral/70 text-neutral-content md:rounded-3xl flex flex-col md:h-auto h-full">
       <div className="h-56 p-6 flex flex-col justify-end relative gap-2">
         <span className="absolute top-10 left-6 font-medium">Calc</span>
         <ThemeController />
@@ -69,45 +69,47 @@ export const Calculator = () => {
           <p className="truncate">{calculator.token}</p>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-6 p-6 rounded-3xl bg-neutral text-neutral-content">
-        <button
-          onClick={handleReset}
-          className="btn text-2xl font-bold btn-error"
-        >
-          AC
-        </button>
-        <button
-          onClick={handleClear}
-          className="btn text-2xl font-bold btn-error"
-        >
-          C
-        </button>
-        <OperationButton operation="%" onClick={handleAddOperation} />
-        <OperationButton operation="/" onClick={handleAddOperation} />
+      <div className="md:rounded-3xl rounded-t-3xl bg-neutral text-neutral-content flex-1">
+        <div className="grid grid-cols-4 md:gap-6 gap-3 p-4 md:p-6">
+          <button
+            onClick={handleReset}
+            className="btn text-2xl font-bold btn-error"
+          >
+            AC
+          </button>
+          <button
+            onClick={handleClear}
+            className="btn text-2xl font-bold btn-error"
+          >
+            C
+          </button>
+          <OperationButton operation="%" onClick={handleAddOperation} />
+          <OperationButton operation="/" onClick={handleAddOperation} />
 
-        <OperandButton operand="7" onClick={handleAddOperand} />
-        <OperandButton operand="8" onClick={handleAddOperand} />
-        <OperandButton operand="9" onClick={handleAddOperand} />
-        <OperationButton operation="x" onClick={handleAddOperation} />
+          <OperandButton operand="7" onClick={handleAddOperand} />
+          <OperandButton operand="8" onClick={handleAddOperand} />
+          <OperandButton operand="9" onClick={handleAddOperand} />
+          <OperationButton operation="x" onClick={handleAddOperation} />
 
-        <OperandButton operand="4" onClick={handleAddOperand} />
-        <OperandButton operand="5" onClick={handleAddOperand} />
-        <OperandButton operand="6" onClick={handleAddOperand} />
-        <OperationButton operation="-" onClick={handleAddOperation} />
+          <OperandButton operand="4" onClick={handleAddOperand} />
+          <OperandButton operand="5" onClick={handleAddOperand} />
+          <OperandButton operand="6" onClick={handleAddOperand} />
+          <OperationButton operation="-" onClick={handleAddOperation} />
 
-        <OperandButton operand="1" onClick={handleAddOperand} />
-        <OperandButton operand="2" onClick={handleAddOperand} />
-        <OperandButton operand="3" onClick={handleAddOperand} />
-        <OperationButton operation="+" onClick={handleAddOperation} />
+          <OperandButton operand="1" onClick={handleAddOperand} />
+          <OperandButton operand="2" onClick={handleAddOperand} />
+          <OperandButton operand="3" onClick={handleAddOperand} />
+          <OperationButton operation="+" onClick={handleAddOperation} />
 
-        <OperandButton operand="0" onClick={handleAddOperand} />
-        <OperandButton operand="." onClick={handleAddOperand} />
-        <button
-          onClick={handleEvaluate}
-          className="btn btn-error text-2xl font-bold"
-        >
-          <EqualsIcon />
-        </button>
+          <OperandButton operand="0" onClick={handleAddOperand} />
+          <OperandButton operand="." onClick={handleAddOperand} />
+          <button
+            onClick={handleEvaluate}
+            className="btn btn-error text-2xl font-bold"
+          >
+            <EqualsIcon />
+          </button>
+        </div>
       </div>
     </div>
   );
