@@ -5,6 +5,7 @@ import {
   Operation,
   calculatorReducer,
   defaultCalculatorState,
+  isOperation,
 } from "@reducers/calculatorReducer";
 import { OperationButton } from "../Actions/Buttons/OperationButton";
 import EqualsIcon from "@icons/equals-icon.svg?react";
@@ -48,12 +49,24 @@ export const Calculator = () => {
   };
 
   return (
-    <div className="max-w-md w-full bg-neutral/70 text-neutral-content md:rounded-3xl md:h-auto h-full">
-      <div className="h-56 p-6 flex flex-col justify-end relative">
+    <div className="max-w-md shadow-2xl w-full bg-neutral/70 text-neutral-content md:rounded-3xl md:h-auto h-full">
+      <div className="h-56 p-6 flex flex-col justify-end relative gap-2">
         <span className="absolute top-10 left-6 font-medium">Calc</span>
         <ThemeController />
+        <div className="text-right text-2xl">
+          <p className="truncate">
+            {calculator.previousOperations.map((token, index) => (
+              <span
+                key={`${token}-${index}`}
+                className={`mr-1 ${isOperation(token) && "text-accent"}`}
+              >
+                {token}
+              </span>
+            ))}
+          </p>
+        </div>
         <div className="text-right text-5xl">
-          <p className="truncate">{calculator.display}</p>
+          <p className="truncate">{calculator.token}</p>
         </div>
       </div>
       <div className="grid grid-cols-4 gap-6 p-6 rounded-3xl bg-neutral text-neutral-content">

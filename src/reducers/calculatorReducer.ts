@@ -2,13 +2,13 @@ import { Calculator } from "@/components/Calculator/Calculator";
 import { evaluate } from "mathjs";
 
 export type Calculator = {
-  display: string;
-  currentToken: string;
+  token: string;
+  previousOperations: (string | Operation)[];
 };
 
 export const defaultCalculatorState: Calculator = {
-  display: "0",
-  currentToken: "0",
+  token: "0",
+  previousOperations: [],
 };
 
 export type CalculatorAction =
@@ -62,10 +62,10 @@ export const calculatorReducer = (
   calculator: Calculator,
   action: CalculatorAction,
 ) => {
-  const { display, currentToken } = calculator;
-  let currentDisplay = display;
-  if (currentDisplay === "Infinity" || currentDisplay === "Error") {
-    currentDisplay = "";
+  const { token, previousOperations } = calculator;
+  let currentToken = token;
+  if (currentToken === "Infinity" || currentToken === "Error") {
+    currentToken = "";
   }
 
   switch (action.type) {
@@ -77,8 +77,7 @@ export const calculatorReducer = (
       } else if (currentToken === "0" && operand === ".") {
         return {
           ...calculator,
-          display: currentDisplay + operand,
-          currentToken: currentToken + operand,
+          token: currentToken + operand,
         };
       }
 
@@ -88,47 +87,44 @@ export const calculatorReducer = (
 
       return {
         ...calculator,
-        display: currentDisplay === "0" ? operand : currentDisplay + operand,
-        currentToken:
+        token:
           currentToken === "0" && operand !== "."
             ? operand
             : currentToken + operand,
       };
     }
     case "ADD_OPERATION": {
-      if (action.operation === "%" && currentToken === "%") {
-        return { ...calculator, display: currentDisplay + action.operation };
-      } else if (isOperation(currentToken)) {
-        console.log({
-          currentDisplay,
-          currentToken,
-        });
+      if (action.operation === "%") {
         return {
           ...calculator,
-          display: currentDisplay.slice(0, -1) + action.operation,
-          currentToken: action.operation,
+          token: evaluate(`${currentToken}%`).toString(),
         };
       } else if (!isOperation(currentToken)) {
         return {
           ...calculator,
-          display: currentDisplay + action.operation,
-          currentToken: action.operation,
+          previousOperations: [
+            ...previousOperations,
+            currentToken,
+            action.operation,
+          ],
+          token: "0",
         };
       }
       return calculator;
     }
     case "EVALUATE": {
       let res = "";
-      const parsedDisplay = currentDisplay.replace("x", "*");
+      const expression = previousOperations.join("") + currentToken;
+      const mathjsExpression = expression.replace("x", "*");
       try {
-        res = evaluate(parsedDisplay).toString();
+        res = evaluate(mathjsExpression).toString();
       } catch (e) {
         res = "Error";
       }
       return {
         ...calculator,
-        display: res || currentDisplay,
-        currentToken: res || currentToken,
+        token: res || currentToken,
+        previousOperations: res ? [] : previousOperations,
       };
     }
 
@@ -136,6 +132,6 @@ export const calculatorReducer = (
       return defaultCalculatorState;
 
     case "CLEAR":
-      return { ...calculator, currentToken: "0" };
+      return { ...calculator, token: "0" };
   }
 };
