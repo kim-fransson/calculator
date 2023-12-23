@@ -4,17 +4,16 @@ import {
   Operand,
   Operation,
   calculatorReducer,
+  defaultCalculatorState,
 } from "@reducers/calculatorReducer";
 import { OperationButton } from "../Actions/Buttons/OperationButton";
 import EqualsIcon from "@icons/equals-icon.svg?react";
 
-const initialState = {
-  display: "0",
-  currentToken: "0",
-};
-
 export const Calculator = () => {
-  const [calculator, dispatch] = useReducer(calculatorReducer, initialState);
+  const [calculator, dispatch] = useReducer(
+    calculatorReducer,
+    defaultCalculatorState,
+  );
 
   const handleAddOperand = (operand: Operand) => {
     dispatch({
@@ -36,6 +35,18 @@ export const Calculator = () => {
     });
   };
 
+  const handleReset = () => {
+    dispatch({
+      type: "RESET",
+    });
+  };
+
+  const handleClear = () => {
+    dispatch({
+      type: "CLEAR",
+    });
+  };
+
   return (
     <div className="max-w-md w-full bg-neutral/70 text-neutral-content md:rounded-3xl md:h-auto h-full">
       <div className="h-56 p-6 flex flex-col justify-end relative">
@@ -46,8 +57,18 @@ export const Calculator = () => {
         </div>
       </div>
       <div className="grid grid-cols-4 gap-6 p-6 rounded-3xl bg-neutral text-neutral-content">
-        <button className="btn text-2xl font-bold"></button>
-        <button className="btn text-2xl font-bold"></button>
+        <button
+          onClick={handleReset}
+          className="btn text-2xl font-bold btn-error"
+        >
+          AC
+        </button>
+        <button
+          onClick={handleClear}
+          className="btn text-2xl font-bold btn-error"
+        >
+          C
+        </button>
         <OperationButton operation="%" onClick={handleAddOperation} />
         <OperationButton operation="/" onClick={handleAddOperation} />
 

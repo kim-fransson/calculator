@@ -1,3 +1,4 @@
+import { Calculator } from "@/components/Calculator/Calculator";
 import { evaluate } from "mathjs";
 
 export type Calculator = {
@@ -5,7 +6,17 @@ export type Calculator = {
   currentToken: string;
 };
 
-export type CalculatorAction = AddOperand | AddOperation | Evaluate;
+export const defaultCalculatorState: Calculator = {
+  display: "0",
+  currentToken: "0",
+};
+
+export type CalculatorAction =
+  | AddOperand
+  | AddOperation
+  | Evaluate
+  | Reset
+  | Clear;
 
 export type Operand =
   | "0"
@@ -32,6 +43,14 @@ export type AddOperation = {
 
 export type Evaluate = {
   type: "EVALUATE";
+};
+
+export type Reset = {
+  type: "RESET";
+};
+
+export type Clear = {
+  type: "CLEAR";
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -112,5 +131,11 @@ export const calculatorReducer = (
         currentToken: res || currentToken,
       };
     }
+
+    case "RESET":
+      return defaultCalculatorState;
+
+    case "CLEAR":
+      return { ...calculator, currentToken: "0" };
   }
 };
