@@ -35,7 +35,7 @@ export type AddOperand = {
   operand: Operand;
 };
 
-export type Operation = "%" | "/" | "x" | "-" | "+";
+export type Operation = "%" | "÷" | "×" | "-" | "+";
 export type AddOperation = {
   type: "ADD_OPERATION";
   operation: Operation;
@@ -55,7 +55,7 @@ export type Clear = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isOperation = (value: any): value is Operation => {
-  return ["%", "/", "x", "-", "+"].includes(value);
+  return ["%", "÷", "×", "-", "+"].includes(value);
 };
 
 export const calculatorReducer = (
@@ -115,7 +115,7 @@ export const calculatorReducer = (
     case "EVALUATE": {
       let res = "";
       const expression = previousOperations.join("") + currentToken;
-      const mathjsExpression = expression.replace("x", "*");
+      const mathjsExpression = expression.replace("×", "*").replace("÷", "/");
       try {
         res = evaluate(mathjsExpression).toString();
       } catch (e) {

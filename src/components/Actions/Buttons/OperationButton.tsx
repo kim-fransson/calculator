@@ -19,11 +19,11 @@ export const OperationButton = (props: OperationButtonProps) => {
       icon = <PercentIcon />;
       classes = "btn-secondary";
       break;
-    case "/":
+    case "÷":
       icon = <DivisionIcon />;
       classes = "btn-accent";
       break;
-    case "x":
+    case "×":
       icon = <MultiplicationIcon />;
       classes = "btn-accent";
       break;

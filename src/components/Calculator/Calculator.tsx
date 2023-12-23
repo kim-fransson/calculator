@@ -84,12 +84,12 @@ export const Calculator = () => {
             C
           </button>
           <OperationButton operation="%" onClick={handleAddOperation} />
-          <OperationButton operation="/" onClick={handleAddOperation} />
+          <OperationButton operation="÷" onClick={handleAddOperation} />
 
           <OperandButton operand="7" onClick={handleAddOperand} />
           <OperandButton operand="8" onClick={handleAddOperand} />
           <OperandButton operand="9" onClick={handleAddOperand} />
-          <OperationButton operation="x" onClick={handleAddOperation} />
+          <OperationButton operation="×" onClick={handleAddOperation} />
 
           <OperandButton operand="4" onClick={handleAddOperand} />
           <OperandButton operand="5" onClick={handleAddOperand} />
