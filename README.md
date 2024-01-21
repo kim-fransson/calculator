@@ -2,7 +2,7 @@
 
 Project designed from [BigDevSoon.me](https://bigdevsoon.me/)
 
-Live demo https://calculator-kohl-alpha-18.vercel.app/
+Live demo https://calculator.made-by-kim.com/
 
 ## Preview
 
